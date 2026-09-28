@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "2369548471",
+    "project_id": "weather-app-cdc9a",
+    "storage_bucket": "weather-app-cdc9a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2369548471:android:57d21432ae95b6174e9d32",
+        "android_client_info": {
+          "package_name": "com.eshem.weather_app_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoJ5KRCQc50-Tk7Kxbbmh0hL70LbngY70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

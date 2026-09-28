@@ -1,42 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_flutter/UI/Screens/Dashboard%20Screen/Dashboard_Screen.dart';
-import 'package:weather_app_flutter/UI/Screens/Login%20Screen/Login_Screen.dart';
-import 'package:weather_app_flutter/UI/Screens/Profile%20Screen/Profile_Screen.dart';
-import 'package:weather_app_flutter/UI/Screens/Signup%20Screen/Signup_Screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'Services/remote_config_service.dart';
+import 'Providers/signin_provider.dart';
+import 'Providers/signup_provider.dart';
+import 'Providers/profile_provider.dart';
+import 'Providers/weather_provider.dart';
+import 'Providers/detailed_weather_provider.dart';
+import 'UI/Screens/Dashboard Screen/Dashboard_Screen.dart';
+import 'UI/Screens/Detailed Screen/Detailed_Screen.dart';
+import 'UI/Screens/Login Screen/Login_Screen.dart';
+import 'UI/Screens/Profile Screen/Profile_Screen.dart';
+import 'UI/Screens/Signup Screen/Signup_Screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<RemoteConfigService>(
+          create: (_) => RemoteConfigService(),
+        ),
+
+        // 2. Auth & User Profile Providers
+        ChangeNotifierProvider(create: (_) => SigninProvider()),
+        ChangeNotifierProvider(create: (_) => SignupProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+
+
+        ChangeNotifierProxyProvider<RemoteConfigService, WeatherProvider>(
+          create: (context) => WeatherProvider(context.read<RemoteConfigService>()),
+          update: (context, config, previous) => previous ?? WeatherProvider(config),
+        ),
+        ChangeNotifierProxyProvider<RemoteConfigService, DetailedWeatherProvider>(
+          create: (context) => DetailedWeatherProvider(context.read<RemoteConfigService>()),
+          update: (context, config, previous) => previous ?? DetailedWeatherProvider(config),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        primaryColor: Color.fromRGBO(37, 211, 102, 1),
-
-      ),
-      home: Profile_Screen()
+      title: 'Weather App',
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const Login_Screen(),
+        '/signup': (context) => const Signup_Screen(),
+        '/dashboard': (context) => const Dashboard_Screen(),
+        '/profile': (context) => const Profile_Screen(),
+        '/detailed': (context) => const Detailed_Screen(),
+      },
     );
   }
 }

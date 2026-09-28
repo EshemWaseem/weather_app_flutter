@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_flutter/UI/Screens/Custom_Widget.dart';
+import 'package:provider/provider.dart';
+import '../../../Providers/signin_provider.dart';
+import '../Custom_Widget.dart';
+
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -9,114 +12,69 @@ class Login_Screen extends StatefulWidget {
 }
 
 class _Login_ScreenState extends State<Login_Screen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleSignIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) return;
+
+    final success = await context.read<SigninProvider>().signIn(email, password);
+
+    if (!mounted) return;
+    if (success) {
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.read<SigninProvider>().errorMessage ?? 'Error')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<SigninProvider>();
+
     return Scaffold(
-      backgroundColor: Color(0xff02150E),
+      backgroundColor: const Color(0xff02150E),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
-
             children: [
-
               Padding(
                 padding: const EdgeInsets.only(top: 130, bottom: 20),
-                child: Center(
-                  child: Image.asset('Assets/Raining_cloud.png', width: 200, height: 200,),
+                child: Image.asset('Assets/Raining_cloud.png', width: 200, height: 200),
+              ),
+              CustomTextField(
+                label: 'Enter Email', hintText: 'admin@gmail.com',
+                prefixIcon: Icons.mail_outline, controller: _emailController,
+              ),
+              const SizedBox(height: 15),
+              CustomTextField(
+                label: 'Enter Password', hintText: '********',
+                prefixIcon: Icons.lock_outline, controller: _passwordController,
+                isObscure: true,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: PrimaryButton(
+                  text: 'Sign in', isLoading: provider.isLoading, onPressed: _handleSignIn,
                 ),
               ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: CustomTextField(label: 'Enter Email', hintText: 'admin@gmail.com', prefixIcon: Icons.mail_outline),
+              PrimaryButton(
+                text: 'Sign up', color: const Color(0xff041E12),
+                onPressed: () => Navigator.pushNamed(context, '/signup'),
               ),
-              CustomTextField(label: 'Enter Password', hintText: '********', prefixIcon: Icons.lock_outline),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, bottom: 10),
-                    child: Text('Forgot Password?', style: TextStyle(color: Colors.white70, fontSize: 15),),
-                  )
-                ],
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: PrimaryButton(text: 'Sign in', color: Color(0xff25D366), onPressed: (){}),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: PrimaryButton(text: 'Sign up', color: Color(0xff041E12), onPressed: (){}),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text('Or Continue With', style: TextStyle(color: Colors.white70, fontSize: 15),),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Divider(),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 15, left: 35, right: 35),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height:65,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Color(0xff041E12),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset('Assets/apple_logo.png', width: 15, height: 15,),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text('Apple', style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600),),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 65,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Color(0xff041E12),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset('Assets/google_logo.png', width: 15, height: 15,),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text('Google', style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600),),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-
-
-
-
-
-
-
-
             ],
           ),
         ),
