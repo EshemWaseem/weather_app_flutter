@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_flutter/UI/Screens/Dashboard%20Screen/Dashboard_Screen.dart';
+import 'package:weather_app_flutter/UI/Screens/Forgot%20Password%20Screen/Forgot_Password_Screen.dart';
+import 'package:weather_app_flutter/UI/Screens/Forgot%20Password%20Screen/New_Password_Screen.dart';
+import 'package:weather_app_flutter/UI/Screens/Forgot%20Password%20Screen/Recover_Password_Screen.dart';
 import 'package:weather_app_flutter/UI/Screens/Login%20Screen/Login_Screen.dart';
 import 'package:weather_app_flutter/UI/Screens/Profile%20Screen/Profile_Screen.dart';
 import 'package:weather_app_flutter/UI/Screens/Signup%20Screen/Signup_Screen.dart';
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(37, 211, 102, 1),
 
       ),
-      home: Profile_Screen()
+      home: Login_Screen()
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_flutter/UI/Screens/Custom_Widget.dart';
+import 'package:weather_app_flutter/UI/Screens/Dashboard%20Screen/Dashboard_Screen.dart';
+import 'package:weather_app_flutter/UI/Screens/Forgot%20Password%20Screen/Forgot_Password_Screen.dart';
+import 'package:weather_app_flutter/UI/Screens/Signup%20Screen/Signup_Screen.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -37,19 +40,42 @@ class _Login_ScreenState extends State<Login_Screen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 10),
-                    child: Text('Forgot Password?', style: TextStyle(color: Colors.white70, fontSize: 15),),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Forgot_Password_Screen(),
+                            ),
+                          );
+                        },
+                        child: Text('Forgot Password?', style: TextStyle(color: Colors.white70, fontSize: 15),)),
                   )
                 ],
               ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: PrimaryButton(text: 'Sign in', color: Color(0xff25D366), onPressed: (){}),
+                child: PrimaryButton(text: 'Sign in', color: Color(0xff25D366), onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Dashboard_Screen(),
+                    ),
+                  );
+                },),
               ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: PrimaryButton(text: 'Sign up', color: Color(0xff041E12), onPressed: (){}),
+                child: PrimaryButton(text: 'Sign up', color: Color(0xff041E12), onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Signup_Screen(),
+                    ),
+                  );
+                },),
               ),
 
               Padding(

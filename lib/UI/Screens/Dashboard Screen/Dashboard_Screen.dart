@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app_flutter/UI/Screens/Profile%20Screen/Profile_Screen.dart';
 
 class Dashboard_Screen extends StatefulWidget {
   const Dashboard_Screen({super.key});
@@ -33,7 +34,17 @@ class _Dashboard_ScreenState extends State<Dashboard_Screen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 30, right: 10),
-                          child: Icon(Icons.settings_outlined, color: Colors.white, size: 30, ),
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Profile_Screen(),
+                                  ),
+                                );
+                              },
+
+                              child: Icon(Icons.settings_outlined, color: Colors.white, size: 30, )),
                         )
                       ],
                     ),
@@ -132,7 +143,9 @@ class _Dashboard_ScreenState extends State<Dashboard_Screen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 20, bottom: 10, top: 10),
-                    child: Text('7 Days >', style: TextStyle(fontSize: 20, color: Colors.white70),),
+                    child: InkWell(
+
+                        child: Text('7 Days >', style: TextStyle(fontSize: 20, color: Colors.white70),)),
                   ),
 
                 ],

@@ -45,7 +45,7 @@ class _Signup_ScreenState extends State<Signup_Screen> {
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                child: PrimaryButton(text: 'Sign in', color: Color(0xff25D366), onPressed: (){}),
+                child: PrimaryButton(text: 'Sign up', color: Color(0xff25D366), onPressed: (){}),
               ),
 
 
