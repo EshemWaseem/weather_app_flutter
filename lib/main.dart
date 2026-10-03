@@ -8,11 +8,14 @@ import 'Providers/signup_provider.dart';
 import 'Providers/profile_provider.dart';
 import 'Providers/weather_provider.dart';
 import 'Providers/detailed_weather_provider.dart';
+import 'Providers/forgot_password_provider.dart';
+
 import 'UI/Screens/Dashboard Screen/Dashboard_Screen.dart';
 import 'UI/Screens/Detailed Screen/Detailed_Screen.dart';
 import 'UI/Screens/Login Screen/Login_Screen.dart';
 import 'UI/Screens/Profile Screen/Profile_Screen.dart';
 import 'UI/Screens/Signup Screen/Signup_Screen.dart';
+import 'UI/Screens/Forgot Password screen/forgot_password_Screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,11 +28,11 @@ void main() async {
           create: (_) => RemoteConfigService(),
         ),
 
-        // 2. Auth & User Profile Providers
+
         ChangeNotifierProvider(create: (_) => SigninProvider()),
         ChangeNotifierProvider(create: (_) => SignupProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
-
+        ChangeNotifierProvider(create: (_) => ForgotPasswordProvider()),
 
         ChangeNotifierProxyProvider<RemoteConfigService, WeatherProvider>(
           create: (context) => WeatherProvider(context.read<RemoteConfigService>()),
@@ -60,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const Dashboard_Screen(),
         '/profile': (context) => const Profile_Screen(),
         '/detailed': (context) => const Detailed_Screen(),
+        '/forgot-password': (context) => const Forgot_Password_Screen(),
       },
     );
   }

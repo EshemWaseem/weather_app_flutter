@@ -49,11 +49,12 @@ class DetailedWeatherProvider extends ChangeNotifier {
   }
 
   Future<void> fetchDetailedWeather(String city) async {
-    if (city.trim().isEmpty) return;
+    if (city.trim().isEmpty || city == "Unknown Location" || city == "Loading Location...") return;
 
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+
+    Future.microtask(() => notifyListeners());
 
     try {
       final apiKey = await _configService.getOpenWeatherApiKey();
@@ -76,7 +77,6 @@ class DetailedWeatherProvider extends ChangeNotifier {
           _condition = current['weather'][0]['main'];
           _iconCode = current['weather'][0]['icon'] ?? '10d';
 
-          // Format live date (e.g., "28, September")
           final dt = DateTime.fromMillisecondsSinceEpoch((current['dt'] as int) * 1000);
           final months = [
             'January', 'February', 'March', 'April', 'May', 'June',
@@ -84,7 +84,6 @@ class DetailedWeatherProvider extends ChangeNotifier {
           ];
           _date = "${dt.day}, ${months[dt.month - 1]}";
 
-          // Extract daily forecasts across unique days
           final weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
           final Map<String, DailyForecast> uniqueDays = {};
 
@@ -92,7 +91,6 @@ class DetailedWeatherProvider extends ChangeNotifier {
             final forecastDate = DateTime.fromMillisecondsSinceEpoch((item['dt'] as int) * 1000);
             final dayKey = weekdays[forecastDate.weekday - 1];
 
-            // Pick readings around noon or store the first occurrence for each day
             if (!uniqueDays.containsKey(dayKey) || item['dt_txt'].toString().contains("12:00:00")) {
               uniqueDays[dayKey] = DailyForecast(
                 day: dayKey,

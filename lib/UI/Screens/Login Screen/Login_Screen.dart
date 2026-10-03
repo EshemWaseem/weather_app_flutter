@@ -55,22 +55,45 @@ class _Login_ScreenState extends State<Login_Screen> {
                 padding: const EdgeInsets.only(top: 130, bottom: 20),
                 child: Image.asset('Assets/Raining_cloud.png', width: 200, height: 200),
               ),
+
               CustomTextField(
                 label: 'Enter Email', hintText: 'admin@gmail.com',
                 prefixIcon: Icons.mail_outline, controller: _emailController,
               ),
+
               const SizedBox(height: 15),
+
               CustomTextField(
                 label: 'Enter Password', hintText: '********',
                 prefixIcon: Icons.lock_outline, controller: _passwordController,
                 isObscure: true,
               ),
+
+              // Forgot Password Button Added Here
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgot-password');
+                  },
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      color: Color(0xff25D366), // App ka green color
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
+                padding: const EdgeInsets.only(top: 10, bottom: 30),
                 child: PrimaryButton(
                   text: 'Sign in', isLoading: provider.isLoading, onPressed: _handleSignIn,
                 ),
               ),
+
               PrimaryButton(
                 text: 'Sign up', color: const Color(0xff041E12),
                 onPressed: () => Navigator.pushNamed(context, '/signup'),
